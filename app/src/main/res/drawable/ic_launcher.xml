@@ -1,0 +1,16 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <!-- Estante estilizada com 3 ranhuras. -->
+    <path
+        android:fillColor="#6D4C41"
+        android:pathData="M4,6 h40 v34 h-40 z" />
+    <path
+        android:fillColor="#5D4037"
+        android:pathData="M4,6 h40 v4 h-40 z" />
+    <path
+        android:fillColor="#EFEBE9"
+        android:pathData="M10,10 h8 v26 h-8 z M18,10 h8 v26 h-8 z M26,10 h8 v26 h-8 z" />
+</vector>

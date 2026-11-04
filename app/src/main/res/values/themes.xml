@@ -1,0 +1,9 @@
+<resources>
+    <style name="Theme.HQShelf" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/hqshelf_background</item>
+        <item name="android:colorPrimary">@color/hqshelf_primary</item>
+        <item name="android:colorAccent">@color/hqshelf_primary</item>
+        <item name="android:statusBarColor">@color/hqshelf_background</item>
+        <item name="android:navigationBarColor">@color/hqshelf_background</item>
+    </style>
+</resources>

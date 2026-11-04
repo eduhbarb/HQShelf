@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">HQShelf</string>
+    <string name="open_with">Abrir com leitor de quadrinhos ou livros</string>
+    <string name="shelf_empty">Nenhuma HQ na estante. Toque em \+ para adicionar um .cbr, .cbz, .epub, .pdf ou .mobi.</string>
+    <string name="shelf_full">Estante cheia (máximo de 3 HQs).</string>
+    <string name="error_corrupt">Arquivo corrompido ou sem capa válida.</string>
+    <string name="error_unsupported">Formato não suportado. Use .cbr, .cbz, .epub, .pdf ou .mobi.</string>
+    <string name="slot_add">Adicionar HQ</string>
+    <string name="slot_remove">Remover</string>
+    <string name="shelf_title">Estante</string>
+    <string name="shelf_subtitle">Toque em um slot vazio para adicionar uma HQ.</string>
+    <string name="shelf_add_cta">Adicionar HQ</string>
+    <string name="shelf_hint">Toque na capa para remover. Arraste as capas para reordenar.</string>
+    <string name="shelf_style_label">Aparência da estante</string>
+    <string name="shelf_style_carvalho">Carvalho</string>
+    <string name="shelf_style_branco">Branco</string>
+    <string name="shelf_style_preto">Preto</string>
+    <string name="shelf_force_update">Forçar atualização do widget</string>
+</resources>

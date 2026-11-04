@@ -1,0 +1,23 @@
+<resources>
+    <!-- Paleta Material 3 — tom quente, biblioteca leitura. Não altera lógica. -->
+    <color name="hqshelf_primary">#7D4A2E</color>
+    <color name="hqshelf_on_primary">#FFFFFF</color>
+    <color name="hqshelf_primary_container">#FFDBC9</color>
+    <color name="hqshelf_on_primary_container">#2F1201</color>
+    <color name="hqshelf_secondary">#66574C</color>
+    <color name="hqshelf_on_secondary">#FFFFFF</color>
+    <color name="hqshelf_secondary_container">#EFDCCC</color>
+    <color name="hqshelf_on_secondary_container">#20160D</color>
+    <color name="hqshelf_background">#FFF8F1</color>
+    <color name="hqshelf_surface">#FFF8F1</color>
+    <color name="hqshelf_surface_variant">#F3E1D4</color>
+    <color name="hqshelf_on_surface">#211A12</color>
+    <color name="hqshelf_on_surface_variant">#524338</color>
+    <color name="hqshelf_outline">#847366</color>
+    <color name="hqshelf_outline_variant">#D8C2B4</color>
+    <color name="hqshelf_shelf">#A6795E</color>
+    <color name="hqshelf_shelf_dark">#6B4530</color>
+    <color name="hqshelf_shelf_light">#C69B7D</color>
+    <color name="hqshelf_slot">#FAEFE4</color>
+    <color name="hqshelf_slot_border">#D8C2B4</color>
+</resources>
