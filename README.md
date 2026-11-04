@@ -1,6 +1,6 @@
 # 📚 HQShelf
 
-[![Baixar APK mais recente](https://img.shields.io/github/v/release/SEU_USUARIO/HQShelf?label=vers%C3%A3o&color=blue)](https://github.com/SEU_USUARIO/HQShelf/releases/latest)
+[![Baixar APK mais recente](https://img.shields.io/github/v/release/SEU_USUARIO/HQShelf?label=vers%C3%A3o&color=blue)](https://github.com/eduhbarb/HQShelf/releases/latest)
 
 App Android para organizar sua coleção de quadrinhos (HQs, mangás, graphic novels) em prateleiras digitais.
 
