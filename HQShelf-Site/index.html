@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="HQShelf — widget Android para organizar suas HQs, mangás e livros em uma prateleira na tela inicial. Clique na capa e abra no seu leitor favorito.">
+<meta name="theme-color" content="#0d0d14">
+<title>HQShelf — Sua estante de HQs na tela inicial</title>
+<style>
+  :root{
+    --bg:#0d0d14; --card:#1a1a28; --border:#2a2a3d;
+    --text:#f2f1ec; --muted:#a7a5b3; --amber:#ffb703; --amber-2:#fb8500; --red:#e63946;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:"Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+    line-height:1.5; overflow-x:hidden;
+  }
+  body::before{
+    content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(255,183,3,.10), transparent 40%),
+      radial-gradient(circle at 85% 90%, rgba(67,97,238,.12), transparent 45%),
+      radial-gradient(rgba(255,255,255,.045) 1px, transparent 1px);
+    background-size:auto, auto, 22px 22px;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{width:min(1140px,92vw);margin:0 auto}
+
+  /* Uma tela só: header + hero + como funciona + rodapé em 100dvh */
+  .screen{min-height:100dvh;display:flex;flex-direction:column}
+
+  header{border-bottom:1px solid var(--border);background:rgba(13,13,20,.82);backdrop-filter:blur(12px)}
+  nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 0}
+  .logo{font-size:1.25rem;font-weight:900;letter-spacing:-.5px;display:flex;align-items:center;gap:8px}
+  .logo .book-mark{width:13px;height:13px;background:var(--amber);border-radius:3px;box-shadow:inset 3px 0 0 rgba(0,0,0,.25);transform:rotate(-4deg)}
+  .logo span{color:var(--amber)}
+  .logo small{font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);border:1px solid var(--border);padding:2px 7px;border-radius:999px}
+  .nav-links{display:flex;gap:22px;font-size:.92rem;color:var(--muted)}
+  .nav-links a:hover{color:var(--text)}
+
+  .btn{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:.95rem;padding:12px 20px;border-radius:12px;border:1px solid transparent;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-primary{background:linear-gradient(135deg,var(--amber),var(--amber-2));color:#1a1200;box-shadow:0 8px 22px rgba(251,133,0,.28)}
+  .btn-ghost{background:var(--card);color:var(--text);border-color:var(--border)}
+
+  main{flex:1;display:flex;flex-direction:column}
+
+  .hero{flex:1;display:grid;grid-template-columns:1.08fr .92fr;gap:40px;align-items:center;padding:20px 0}
+  .badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,183,3,.12);color:var(--amber);border:1px solid rgba(255,183,3,.35);font-weight:700;font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:999px}
+  .badge i{width:7px;height:7px;border-radius:50%;background:var(--amber)}
+  h1{font-size:clamp(2.6rem,6vw,4.4rem);font-weight:900;line-height:.95;letter-spacing:-2px;margin:12px 0 8px}
+  h1 em{font-style:normal;color:var(--amber);text-shadow:3px 3px 0 var(--red)}
+  .lead{font-size:1.05rem;color:#d8d7de;max-width:52ch}
+  .lead strong{color:var(--amber)}
+  .lead b{color:#fff}
+  .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
+  .version-note{margin-top:10px;font-size:.83rem;color:var(--muted)}
+  .version-note code{color:var(--amber);background:rgba(255,183,3,.1);padding:1px 6px;border-radius:6px;font-family:Consolas,monospace}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+  .chips li{list-style:none;background:var(--card);border:1px solid var(--border);padding:5px 11px;border-radius:999px;font-size:.82rem;font-weight:700;color:var(--muted)}
+  .chips li b{color:var(--text)}
+
+  /* Prateleira: shelf.png 2952x1440, tábua opaca de 60.7% a 78.1% da altura.
+     Altura renderizada = 48.8% da largura, topo da tábua = 60.7% x 48.8% = 29.6% da largura. */
+  .shelf-scene{position:relative;padding:0 4px}
+  .books{display:flex;align-items:flex-end;justify-content:center;gap:3%;padding:0 4%;margin-bottom:-29.62%;position:relative;z-index:2}
+  .book{width:18%;aspect-ratio:2/3;object-fit:cover;display:block;border-radius:4px 6px 2px 2px;box-shadow:0 2px 0 rgba(0,0,0,.45),-4px 8px 16px rgba(0,0,0,.45);transition:transform .2s ease,box-shadow .2s ease;cursor:pointer;background:#222}
+  .book:hover{transform:translateY(-10px) scale(1.05);box-shadow:0 14px 24px rgba(0,0,0,.6);position:relative;z-index:3}
+  .shelf-board{position:relative;z-index:1}
+  .shelf-board img{width:100%;display:block}
+  .caption{text-align:center;color:var(--muted);font-size:.85rem;margin-top:8px}
+  .caption b{color:var(--text)}
+
+  .how{border-top:1px solid var(--border);padding:16px 0 18px}
+  .how-head{display:flex;align-items:baseline;gap:12px;margin-bottom:12px}
+  .kicker{color:var(--amber);font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:.72rem;white-space:nowrap}
+  .how-head h2{font-size:1.35rem;font-weight:900;letter-spacing:-.5px}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .step{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start}
+  .num{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;flex-shrink:0;border-radius:9px;font-weight:900;font-size:.9rem;background:rgba(255,183,3,.14);color:var(--amber);border:1px solid rgba(255,183,3,.4)}
+  .step h3{font-size:.98rem;margin-bottom:2px}
+  .step p{color:var(--muted);font-size:.87rem}
+  .step p b{color:var(--amber)}
+
+  footer{border-top:1px solid var(--border);padding:10px 0;color:var(--muted);font-size:.82rem}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center}
+
+  @media (max-width:880px){
+    .hero{grid-template-columns:1fr;gap:22px;padding:22px 0}
+    .steps{grid-template-columns:1fr}
+    .nav-links{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="screen">
+
+<header>
+  <div class="wrap">
+    <nav>
+      <a class="logo" href="#"><span class="book-mark"></span>HQ<span>Shelf</span> <small>Widget</small></a>
+      <div class="nav-links">
+        <a href="#como">Como funciona</a>
+        <a href="https://github.com/eduhbarb/HQShelf" target="_blank" rel="noopener">GitHub</a>
+      </div>
+      <a class="btn btn-primary" style="padding:8px 16px" href="https://github.com/eduhbarb/HQShelf/releases/latest" target="_blank" rel="noopener">Baixar APK</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <div class="hero">
+    <div>
+      <span class="badge"><i></i> Widget Android · Grátis · 100% offline</span>
+      <h1>HQ<em>Shelf</em></h1>
+      <p class="lead">
+        O <strong>HQShelf</strong> é um <strong>widget para a tela inicial do Android</strong> que organiza
+        suas HQs, mangás e livros em uma <b>prateleira digital</b>. Adicione seus arquivos,
+        veja tudo com capa na tela inicial e continue a leitura de onde parou —
+        <b>sem nuvem, sem conta, sem servidor</b>.
+      </p>
+      <div class="actions">
+        <a class="btn btn-primary" id="btn-download" href="https://github.com/eduhbarb/HQShelf/releases/latest" target="_blank" rel="noopener">Baixar versão mais recente</a>
+        <a class="btn btn-ghost" href="https://github.com/eduhbarb/HQShelf" target="_blank" rel="noopener">Ver no GitHub</a>
+      </div>
+      <p class="version-note" id="version-note">Buscando a release mais recente no GitHub…</p>
+      <ul class="chips">
+        <li><b>CBR</b></li><li><b>CBZ</b></li><li><b>EPUB</b></li><li><b>PDF</b></li><li><b>MOBI</b></li>
+        <li>Widget na tela inicial</li><li>Tudo local no aparelho</li>
+      </ul>
+    </div>
+
+    <div class="shelf-scene" aria-label="Prateleira do HQShelf com capas de quadrinhos">
+      <div class="books">
+        <img class="book" src="capa-batman.png" alt="Capa Absolute Batman">
+        <img class="book" src="capa-superman.png" alt="Capa Absolute Superman">
+        <img class="book" src="capa-wonder-woman.png" alt="Capa Absolute Wonder Woman">
+        <img class="book" src="capa-flash.png" alt="Capa Absolute Flash">
+        <img class="book" src="capa-martian.png" alt="Capa Absolute Martian Manhunter">
+      </div>
+      <div class="shelf-board"><img src="shelf.png" alt="Prateleira de madeira do HQShelf"></div>
+      <p class="caption">Sua coleção, <b>direto na tela inicial</b> — passe o mouse nas capas.</p>
+    </div>
+  </div>
+
+  <section class="how" id="como">
+    <div class="how-head">
+      <span class="kicker">Como funciona</span>
+      <h2>Três toques e você está lendo</h2>
+    </div>
+    <div class="steps">
+      <article class="step"><span class="num">1</span><div><h3>Adicione seus arquivos</h3><p>Importe <b>CBR, CBZ, EPUB, PDF e MOBI</b> pelo seletor de arquivos. O app lê capa e título sozinho.</p></div></article>
+      <article class="step"><span class="num">2</span><div><h3>Fixe o widget na tela inicial</h3><p>Sua prateleira aparece como <b>widget na home screen</b>. Reordene arrastando os itens.</p></div></article>
+      <article class="step"><span class="num">3</span><div><h3>Clique e leia no seu app favorito</h3><p>Ao clicar na <b>HQ ou livro desejado</b>, abre direto no <b>app de leitura favorito da pessoa</b> — o leitor já instalado no aparelho.</p></div></article>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span><b>HQShelf</b> — widget de prateleira para HQs, mangás e livros.</span>
+    <span>Licença MIT · Jetpack Compose · <a href="https://github.com/eduhbarb/HQShelf" target="_blank" rel="noopener" style="color:var(--amber)">github.com/eduhbarb/HQShelf</a></span>
+  </div>
+</footer>
+
+</div>
+
+<script>
+  // Botão sempre puxa a release mais recente do GitHub:
+  // tenta baixar o APK direto via API; se falhar, cai para /releases/latest.
+  (function () {
+    var REPO = "eduhbarb/HQShelf";
+    var FALLBACK = "https://github.com/" + REPO + "/releases/latest";
+    var btn = document.getElementById("btn-download");
+    var note = document.getElementById("version-note");
+
+    fetch("https://api.github.com/repos/" + REPO + "/releases/latest")
+      .then(function (r) { return r.json(); })
+      .then(function (release) {
+        if (!release || !release.tag_name) throw new Error("sem release");
+        var apk = (release.assets || []).filter(function (a) {
+          return /\.apk$/i.test(a.name);
+        })[0];
+        if (btn) { btn.href = apk ? apk.browser_download_url : FALLBACK; btn.textContent = "Baixar " + release.tag_name + " (APK)"; }
+        if (note) {
+          note.innerHTML = "Versão mais recente: <code>" + release.tag_name + "</code>" +
+            (release.published_at ? " · publicada em " + release.published_at.slice(0, 10) : "") +
+            ". O download começa direto do GitHub.";
+        }
+      })
+      .catch(function () {
+        if (note) note.textContent = "Não foi possível consultar a API agora — o botão leva à página da release mais recente.";
+      });
+  })();
+</script>
+</body>
+</html>
